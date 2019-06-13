@@ -1,35 +1,23 @@
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { store, persistor } from './src/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import Prueba from './src/components/prueba';
+import AppNavigatorWithState from './src/app-navigator-with-state'
+import Loading from './src/components/loader'
 
-
-export default class App extends Component{
+export default class App extends Component {
   render() {
+    console.log("Iniciando store react redux")
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Prueba />
-      </View>
-    );
+      <Provider store={store}>
+        <PersistGate loading={<Loader />} persistor={persistor}>
+          <AppNavigatorWithState />
+        </PersistGate>
+      </Provider>
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});

@@ -1,30 +1,35 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
+import {connect} from 'react-redux';
+import { store } from '../store';
 
 
 class Prueba extends Component {
 
-    constructor(props) {
-        super(props)
-        console.log("constructor")
-        this.state = { sesion: false, counter: 0 }
-    }
+    // constructor(props) {
+    //     super(props)
+    //     console.log("constructor")
+    //     this.state = { sesion: false, counter: 0 }
+    // }
 
     onPressButton = () => {
-        this.setState((state, props) => {
-            return { sesion: !state.sesion, counter: state.counter + 1 }
-        });
+        store.dispatch({
+            type: 'INCREMENT_COUNTER'
+        })
+
     }
 
     render() {
-        console.log("render", this.state)
+        const {session} = this.props;
+        console.log("render", session)
+
         return (
             <View>
-                {!this.state.sesion &&
+                {!session &&
                     <Text>No</Text>
                 }
 
-                <Text>Contador {this.state.counter}</Text>
+                <Text>Contador {session.counter}</Text>
 
                 <Button
                     onPress={this.onPressButton}
@@ -37,4 +42,8 @@ class Prueba extends Component {
 
 }
 
-export default Prueba
+const mapStateToProps = state => ({
+    session: state.session
+})
+
+export default connect(mapStateToProps)(Prueba)
