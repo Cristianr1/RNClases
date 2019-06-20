@@ -3,7 +3,7 @@ import { SafeAreaView, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import {actions} from 'cascos/src/redux/actions/index'
 
-class Home extends PureComponent {
+class Settings extends PureComponent {
     logout = () => {
         this.props.dispatch(actions.session.logout());
         this.props.navigation.navigate('Loading')
@@ -14,7 +14,10 @@ class Home extends PureComponent {
         return (
             <SafeAreaView>
                 <Text>Hello world Home {user.name}</Text>
-
+                <Button
+                    onPress={this.logout}
+                    title="logout"
+                />
             </SafeAreaView>
         )
     }
@@ -24,4 +27,4 @@ const mapStateToProps = state => ({
     user: state.session.user
 })
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps)(Settings)
