@@ -1,27 +1,38 @@
 import React, { PureComponent } from 'react'
-import { SafeAreaView, Text, Button } from 'react-native'
+import { SafeAreaView, Text, Button, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import {actions} from 'cascos/src/redux/actions/index'
+import { actions } from 'cascos/src/redux/actions/index'
+import { getPlaces } from 'cascos/src/services/user'
 
 class Home extends PureComponent {
-    logout = () => {
-        this.props.dispatch(actions.session.logout());
-        this.props.navigation.navigate('Loading')
+    componentDidMount() {
+        this.props.actions.getPlaces();
     }
 
     render() {
-        const { user } = this.props
+        const { user, places } = this.props
         return (
             <SafeAreaView>
-                <Text>Hello world Home {user.name}</Text>
-
+                <FlatList
+                    data={places}
+                />
             </SafeAreaView>
         )
     }
 }
 
-const mapStateToProps = state => ({
-    user: state.session.user
+const mapDispatchToProps = dispatch => ({
+    actions: {
+        getPlaces: () => {
+            console.log("Recuperando datos")
+            dispatch(getPlaces());
+        }
+    }
 })
 
-export default connect(mapStateToProps)(Home)
+const mapStateToProps = state => ({
+    user: state.session.user,
+    places: state.places
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
